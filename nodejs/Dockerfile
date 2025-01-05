@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY . .
 
+
 CMD ["node", "index.mjs"]
 
 # There's no ability to create volumes in docker file
