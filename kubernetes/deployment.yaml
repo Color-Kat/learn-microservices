@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: kubernode-web-server
+
+spec:
+  replicas: 2
+  selector: 
+    # Bind the deployment to the pods with the label app: kubernode-web-server
+    matchLabels:
+      app: kubernode-web-server
+
+  # Template for the pods
+  template:
+    metadata:
+      labels:
+        app: kubernode-web-server # Label for the pods (use it in deployment and service)
+    spec:
+      # List of containers in the pod
+      containers:
+        - name: kubernode-web-server # Any name of the container
+          image: kubernode # Cause I named my image kubernode
+          imagePullPolicy: Never # By default kubernetes will try to pull the image from a registry, we have a local image
+          ports:
+            - containerPort: 3000
