@@ -1,24 +1,25 @@
-version: '3.7'
 services:
-#  postgres:
-#    container_name: postgres
-#    image: postgres
-#    restart: always
-#    ports:
-#      - '5432:5432'
-#  volumes:
-#    - db-data:/var/lib/postgresql/data
-#    environment:
-#      POSTGRES_USER: root
-#      POSTGRES_PASSWORD: password
-#      POSTGRES_DB: nest_microservices
-#
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+
 #    healthcheck:
 #      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
 #      interval: 10s
 #      timeout: 5s
 #      retries: 5
-#
+    networks:
+      - microservices-network
+
 #  redis:
 #    container_name: redis
 #    image: redis
@@ -42,9 +43,9 @@ services:
       - /app/node_modules
     ports:
       - '3000:3000'
-    command: npm run start:debug # for clarity
+    command: npm run start:dev # for clarity
     networks:
-      - net
+      - microservices-network
     depends_on:
       - service-a
 #      - service-b
@@ -60,13 +61,11 @@ services:
     ports:
       - '3001:3001'
       - '3101:3101'
-    environment:
-      DATABASE_URL: postgresql://root:password@postgres:5432/nest_microservices
     command: npm run start:dev # for clarity
     networks:
-      - net
-#    depends_on:
-#      - postgres
+      - microservices-network
+    depends_on:
+      - postgres
 
 #  service-b:
 #    container_name: service-b
@@ -78,9 +77,9 @@ services:
 #      - redis
 
 
-#volumes:
-#  db_data:
+volumes:
+  db-data:
 
 networks:
-  net:
+  microservices-network:
     driver: bridge
