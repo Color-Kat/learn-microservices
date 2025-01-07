@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: postgres
+    container_name: prod_postgres
     image: postgres
     restart: always
     ports:
@@ -20,55 +20,47 @@ services:
     networks:
       - microservices-network
 
-#  redis:
-#    container_name: redis
-#    image: redis
-#    restart: always
-#    ports:
-#      - '6379:6379'
-#
-#    healthcheck:
-#      test: [ "CMD", "redis-cli", "ping" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 3
+  #  redis:
+  #    container_name: redis
+  #    image: redis
+  #    restart: always
+  #    ports:
+  #      - '6379:6379'
+  #
+  #    healthcheck:
+  #      test: [ "CMD", "redis-cli", "ping" ]
+  #      interval: 10s
+  #      timeout: 5s
+  #      retries: 3
 
   api-gateway:
-    container_name: api-gateway
+    container_name: prod_api-gateway
     build:
       context: ./api-gateway
-      target: development # use it to build the development image
-    volumes:
-      - ./api-gateway:/app
-      - /app/node_modules
+      target: production # use it to build the production image
     ports:
       - '3000:3000'
-    command: npm run start:dev # for clarity
     networks:
       - microservices-network
     depends_on:
       - service-a
-#      - service-b
+  #      - service-b
 
   service-a:
-    container_name: service-a
+    container_name: prod_service-a
     build:
       context: ./service-a
-      target: development
-    volumes:
-        - ./service-a:/app
-        - /app/node_modules
+      target: production
     ports:
       - '3001:3001'
       - '3101:3101'
-    command: npm run start:dev # for clarity
     networks:
       - microservices-network
     depends_on:
       - postgres
 
 #  service-b:
-#    container_name: service-b
+#    container_name: prod_service-b
 #    build: ./service-b
 #    ports:
 #      - '3002:3002'
