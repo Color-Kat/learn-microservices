@@ -39,7 +39,7 @@ services:
       - ./api-gateway:/app
     ports:
       - '3000:3000'
-    command: npm run start:dev # for clarity
+    command: npm run start:debug # for clarity
     depends_on:
       - service-a
 #      - service-b
@@ -55,7 +55,7 @@ services:
       - '3001:3001'
     environment:
       DATABASE_URL: postgresql://root:password@postgres:5432/nest_microservices
-    command: npm run start:dev # for clarity
+#    command: npm run start:dev # for clarity
 #    depends_on:
 #      - postgres
 
