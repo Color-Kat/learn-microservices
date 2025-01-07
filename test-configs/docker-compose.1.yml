@@ -12,6 +12,10 @@ services:
     depends_on:
       - db
       - redis
+
+    networks:
+      - internet
+      - appnet
     
   db:
     image: mysql:5.7
@@ -24,6 +28,8 @@ services:
       MYSQL_DATABASE: app
       MYSQL_USER: root
       MYSQL_PASSWORD: 12345678
+    networks:
+      - appnet
 
   redis:
     image: redis
@@ -31,3 +37,14 @@ services:
     ports:
       - "6379:6379"
     restart: unless-stopped
+    networks:
+      - appnet
+    
+networks:
+  internet:
+    name: internet
+    driver: bridge
+  
+  appnet:
+    name: appnet
+    driver: bridge
