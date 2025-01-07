@@ -6,6 +6,8 @@ services:
 #    restart: always
 #    ports:
 #      - '5432:5432'
+#  volumes:
+#    - db-data:/var/lib/postgresql/data
 #    environment:
 #      POSTGRES_USER: root
 #      POSTGRES_PASSWORD: password
@@ -37,9 +39,12 @@ services:
       target: development # use it to build the development image
     volumes:
       - ./api-gateway:/app
+      - /app/node_modules
     ports:
       - '3000:3000'
     command: npm run start:debug # for clarity
+    networks:
+      - net
     depends_on:
       - service-a
 #      - service-b
@@ -51,11 +56,15 @@ services:
       target: development
     volumes:
         - ./service-a:/app
+        - /app/node_modules
     ports:
       - '3001:3001'
+      - '3101:3101'
     environment:
       DATABASE_URL: postgresql://root:password@postgres:5432/nest_microservices
-#    command: npm run start:dev # for clarity
+    command: npm run start:dev # for clarity
+    networks:
+      - net
 #    depends_on:
 #      - postgres
 
@@ -69,5 +78,9 @@ services:
 #      - redis
 
 
-volumes:
-  postgres_data:
+#volumes:
+#  db_data:
+
+networks:
+  net:
+    driver: bridge
