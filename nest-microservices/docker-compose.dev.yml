@@ -20,18 +20,27 @@ services:
     networks:
       - microservices-network
 
-#  redis:
-#    container_name: redis
-#    image: redis
-#    restart: always
-#    ports:
-#      - '6379:6379'
-#
-#    healthcheck:
-#      test: [ "CMD", "redis-cli", "ping" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 3
+  nats:
+    container_name: nats
+    image: nats:latest
+    restart: always
+    ports:
+      - '4222:4222'
+    networks:
+      - microservices-network
+
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   api-gateway:
     container_name: api-gateway
@@ -48,7 +57,7 @@ services:
       - microservices-network
     depends_on:
       - service-a
-#      - service-b
+      - service-b
 
   service-a:
     container_name: service-a
@@ -67,14 +76,22 @@ services:
     depends_on:
       - postgres
 
-#  service-b:
-#    container_name: service-b
-#    build: ./service-b
-#    ports:
-#      - '3002:3002'
-#    command: npm run start:dev # for clarity
-#    depends_on:
-#      - redis
+  service-b:
+    container_name: service-b
+    build:
+      context: ./service-b
+      target: development
+    volumes:
+      - ./service-b:/app
+      - /app/node_modules
+    ports:
+      - '3002:3002'
+    command: npm run start:dev # for clarity
+    networks:
+      - microservices-network
+    depends_on:
+      - redis
+      - nats
 
 
 volumes:
