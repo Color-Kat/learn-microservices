@@ -93,6 +93,13 @@ services:
       - redis
       - nats
 
+  python-service:
+    container_name: python-service
+    build: ./python-service
+    ports:
+      - '3003:3003'
+    networks:
+      - microservices-network
 
 volumes:
   db-data:
