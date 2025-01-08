@@ -8,9 +8,11 @@ export class AppController {
 
     @Get()
     getHello(): Promise<string> {
-        // return new Promise<string>((resolve) => resolve(
-        //     '123'
-        // ));
         return this.appService.getHello();
+    }
+
+    @Get('/skills')
+    getSkills() {
+        // return this.appService.getSkills();
     }
 }

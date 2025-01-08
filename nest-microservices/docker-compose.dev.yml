@@ -67,9 +67,9 @@ services:
     volumes:
         - ./service-a:/app
         - /app/node_modules
-    ports:
-      - '3001:3001'
-      - '3101:3101'
+#    ports:
+#      - '3001:3001'
+#      - '3101:3101'
     command: npm run start:dev # for clarity
     networks:
       - microservices-network
@@ -84,8 +84,8 @@ services:
     volumes:
       - ./service-b:/app
       - /app/node_modules
-    ports:
-      - '3002:3002'
+#    ports:
+#      - '3002:3002'
     command: npm run start:dev # for clarity
     networks:
       - microservices-network
@@ -96,8 +96,8 @@ services:
   python-service:
     container_name: python-service
     build: ./python-service
-    ports:
-      - '3003:3003'
+#    ports:
+#      - '3003:3003'
     networks:
       - microservices-network
 
