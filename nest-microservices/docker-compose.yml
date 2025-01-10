@@ -20,14 +20,14 @@ services:
     networks:
       - microservices-network
 
-  nats:
-    container_name: nats
-    image: nats:latest
-    restart: always
-    ports:
-      - '4222:4222'
-    networks:
-      - microservices-network
+#  nats:
+#    container_name: nats
+#    image: nats:latest
+#    restart: always
+#    ports:
+#      - '4222:4222'
+#    networks:
+#      - microservices-network
 
   redis:
     container_name: redis
@@ -55,59 +55,49 @@ services:
     networks:
       - microservices-network
     depends_on:
-      - service-a
-      - service-b
+      - user-service
+      - auth-service
+#      - python-service
 
-  service-a:
-    container_name: service-a
+  user-service:
+    container_name: user-service
     build:
-      context: ./service-a
+      context: ./user-service
       target: ${BUILD_TARGET}
+    ports:
+      - '3001:3001'
+      - '3101:3101'
     volumes:
-        - ./service-a:/app
+        - ./user-service:/app
         - /app/node_modules
     networks:
       - microservices-network
     depends_on:
       - postgres
-        
-#  auth-service:
-#    container_name: auth-service
-#    build:
-#      context: ./auth-service
-#      target: ${BUILD_TARGET}
-#    volumes:
-#      - ./auth-service:/app
-#      - /app/node_modules
-#    command: npm run start:dev
-#    networks:
-#      - microservices-network
-#    depends_on:
-#      - postgres
 
-  service-b:
-    container_name: service-b
+  auth-service:
+    container_name: auth-service
     build:
-      context: ./service-b
+      context: ./auth-service
       target: ${BUILD_TARGET}
     volumes:
-      - ./service-b:/app
+      - ./auth-service:/app
       - /app/node_modules
-#    ports:
-#      - '3002:3002'
+    ports:
+      - '3002:3002'
+      - '3102:3102'
     networks:
       - microservices-network
     depends_on:
       - redis
-      - nats
 
-  python-service:
-    container_name: python-service
-    build: ./python-service
-#    ports:
-#      - '3003:3003'
-    networks:
-      - microservices-network
+#  python-service:
+#    container_name: python-service
+#    build: ./python-service
+##    ports:
+##      - '3003:3003'
+#    networks:
+#      - microservices-network
 
 volumes:
   db-data:

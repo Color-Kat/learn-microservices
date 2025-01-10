@@ -1,11 +1,11 @@
 {
   "scripts": {
-    "dev:build": "docker compose --env-file .env.env -f docker-compose.dev.yml up --build",
-    "prod:build": "docker compose --env-file .env.prod -f docker-compose.prod.yml up --build",
-    "dev": "docker compose --env-file .env.dev -f docker-compose.dev.yml up",
-    "prod": "docker compose --env-file .env.prod -f docker-compose.prod.yml up",
+    "dev:build": "docker compose --env-file .env.dev -f docker-compose.yml up --build",
+    "prod:build": "docker compose --env-file .env.prod -f docker-compose.yml up --build",
+    "dev": "docker compose --env-file .env.dev -f docker-compose.yml up",
+    "prod": "docker compose --env-file .env.prod -f docker-compose.yml up",
 
-    "dev-down": "docker compose --env-file .env.dev -f docker-compose.dev.yml down",
-    "prod-down": "docker compose --env-file .env.prod -f docker-compose.prod.yml down"
+    "dev-down": "docker compose --env-file .env.dev -f docker-compose.yml down",
+    "prod-down": "docker compose --env-file .env.prod -f docker-compose.yml down"
   }
 }

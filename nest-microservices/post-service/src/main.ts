@@ -13,7 +13,8 @@ async function bootstrap() {
         }
     );
 
-    await app.listen();
+    // Run http server
+    await app.listen(3101);
 }
 
 bootstrap();
