@@ -46,13 +46,12 @@ services:
     container_name: api-gateway
     build:
       context: ./api-gateway
-      target: development # use it to build the development image
+      target: ${BUILD_TARGET} # use it to build the dev or prod image
     volumes:
       - ./api-gateway:/app
       - /app/node_modules
     ports:
       - '3000:3000'
-    command: npm run start:dev # for clarity
     networks:
       - microservices-network
     depends_on:
@@ -63,30 +62,39 @@ services:
     container_name: service-a
     build:
       context: ./service-a
-      target: development
+      target: ${BUILD_TARGET}
     volumes:
         - ./service-a:/app
         - /app/node_modules
-#    ports:
-#      - '3001:3001'
-#      - '3101:3101'
-    command: npm run start:dev # for clarity
     networks:
       - microservices-network
     depends_on:
       - postgres
+        
+#  auth-service:
+#    container_name: auth-service
+#    build:
+#      context: ./auth-service
+#      target: ${BUILD_TARGET}
+#    volumes:
+#      - ./auth-service:/app
+#      - /app/node_modules
+#    command: npm run start:dev
+#    networks:
+#      - microservices-network
+#    depends_on:
+#      - postgres
 
   service-b:
     container_name: service-b
     build:
       context: ./service-b
-      target: development
+      target: ${BUILD_TARGET}
     volumes:
       - ./service-b:/app
       - /app/node_modules
 #    ports:
 #      - '3002:3002'
-    command: npm run start:dev # for clarity
     networks:
       - microservices-network
     depends_on:
