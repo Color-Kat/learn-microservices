@@ -23,7 +23,7 @@ model User {
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
 
-    roles UserRole[]
+    roles Role[] @relation("UserRole")
 }
 
 model Role {
@@ -31,14 +31,5 @@ model Role {
     name        String @unique
     description String
 
-    users UserRole[]
-}
-
-model UserRole {
-    user_id Int
-    role_id Int
-    user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-    role    Role @relation(fields: [role_id], references: [id], onDelete: Cascade)
-
-    @@id([user_id, role_id])
+    users User[] @relation("UserRole")
 }

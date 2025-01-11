@@ -9,7 +9,21 @@ export class UserController {
     }
 
     @Get('/')
-    getUsers() {
-        return this.prisma.user.findMany();
+    getUsers() { 
+        // return this.prisma.user.findMany({
+        //     include: {
+        //         roles: {
+        //             include: {
+        //                 role: true
+        //             }
+        //         },
+        //     }
+        // });
+
+        return this.prisma.user.findMany({
+            include: {
+                roles: true
+            }
+        });
     }
 }

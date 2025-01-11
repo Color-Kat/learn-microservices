@@ -23,23 +23,11 @@ async function main() {
             password: '123',
             image   : '',
             roles   : {
-                create: [
-                    {
-                        role: {
-                            connect: {
-                                name: "User"
-                            }
-                        }
-                    },
-                    {
-                        role: {
-                            connect: {
-                                name: "Admin"
-                            }
-                        }
-                    }
+                connect: [
+                    { name: "User" },
+                    { name: "Admin" }
                 ]
-            },
+            }
         },
     });
 
