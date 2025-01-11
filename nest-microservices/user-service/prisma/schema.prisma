@@ -13,17 +13,25 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum Statuses {
+    ONLINE
+    OFFLINE
+    DELETED
+    BANNED
+}
+
 model User {
-    id       Int    @id @default(autoincrement())
-    email    String @unique
+    id       Int       @id @default(autoincrement())
+    email    String    @unique
     password String
-    name     String
-    image    String
+    username String
+    status   Statuses?
 
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
 
-    roles Role[] @relation("UserRole")
+    roles   Role[]    @relation("UserRole")
+    profile Profile[]
 }
 
 model Role {
@@ -32,4 +40,15 @@ model Role {
     description String
 
     users User[] @relation("UserRole")
+}
+
+model Profile {
+    id     Int  @id @default(autoincrement())
+    userId Int
+    user   User @relation(fields: [userId], references: [id])
+
+    first_name String?
+    last_name  String?
+    birth_data DateTime?
+    image      String?
 }
