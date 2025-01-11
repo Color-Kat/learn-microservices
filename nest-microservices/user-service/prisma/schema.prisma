@@ -30,8 +30,8 @@ model User {
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
 
-    roles   Role[]    @relation("UserRole")
-    profile Profile[]
+    roles   Role[]   @relation("UserRole")
+    profile Profile?
 }
 
 model Role {
@@ -44,7 +44,7 @@ model Role {
 
 model Profile {
     id     Int  @id @default(autoincrement())
-    userId Int
+    userId Int  @unique
     user   User @relation(fields: [userId], references: [id])
 
     first_name String?

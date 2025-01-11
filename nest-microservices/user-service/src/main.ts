@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from "@nestjs/microservices";
+import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
     // Http app
@@ -14,6 +15,11 @@ async function bootstrap() {
             port: 3001,
         },
     });
+
+    app.useGlobalPipes(new ValidationPipe({
+        transform: true,
+    }));
+    microservice.useGlobalPipes(new ValidationPipe());
 
     // Run microservice
     await app.startAllMicroservices();
