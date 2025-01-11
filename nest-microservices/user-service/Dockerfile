@@ -13,6 +13,9 @@ RUN npm install
 # Copy the application code
 COPY . .
 
+# Generate Prisma Client
+RUN npx prisma generate
+
 # Start the application
 CMD ["npm", "run", "start:dev"]
 
@@ -28,6 +31,9 @@ RUN npm install
 ENV NODE_ENV=production
 
 COPY . .
+
+# Generate Prisma Client
+RUN npx prisma generate
 
 RUN npm run build
 

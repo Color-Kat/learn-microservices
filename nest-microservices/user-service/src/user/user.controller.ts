@@ -9,7 +9,7 @@ export class UserController {
     }
 
     @Get('/')
-    getUsers() { 
+    async getUsers() {
         // return this.prisma.user.findMany({
         //     include: {
         //         roles: {

@@ -29,7 +29,7 @@ services:
       - '5555:5555' # Prisma studio
     volumes:
         - ./user-service:/app
-        - user-service_node_modules:/app/node_modules
+        - /app/node_modules
     networks:
       - microservices-network
     depends_on:
@@ -104,7 +104,6 @@ services:
 
 volumes:
   user-db-data:
-  user-service_node_modules:
 
 networks:
   microservices-network:
