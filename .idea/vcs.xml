@@ -9,7 +9,5 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/nest-microservices/api-gateway" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/nest-microservices/service-a" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/nest-microservices/service-b" vcs="Git" />
   </component>
 </project>

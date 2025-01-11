@@ -1,47 +1,4 @@
 services:
-  postgres:
-    container_name: postgres
-    image: postgres
-    restart: always
-    ports:
-      - '5432:5432'
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - microservices-network
-
-#  nats:
-#    container_name: nats
-#    image: nats:latest
-#    restart: always
-#    ports:
-#      - '4222:4222'
-#    networks:
-#      - microservices-network
-
-  redis:
-    container_name: redis
-    image: redis
-    restart: always
-    ports:
-      - '6379:6379'
-
-    healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-
   api-gateway:
     container_name: api-gateway
     build:
@@ -64,6 +21,8 @@ services:
     build:
       context: ./user-service
       target: ${BUILD_TARGET}
+    environment:
+      DATABASE_URL: ${USER_DATABASE_URL}
     ports:
       - '3001:3001'
       - '3101:3101'
@@ -73,7 +32,7 @@ services:
     networks:
       - microservices-network
     depends_on:
-      - postgres
+      - user-service-db
 
   auth-service:
     container_name: auth-service
@@ -88,8 +47,8 @@ services:
       - '3102:3102'
     networks:
       - microservices-network
-    depends_on:
-      - redis
+#    depends_on:
+#      - redis
 
 #  python-service:
 #    container_name: python-service
@@ -99,8 +58,51 @@ services:
 #    networks:
 #      - microservices-network
 
+  user-service-db:
+    container_name: user-service-db
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+#      POSTGRES_DB: ${USER_DB_NAME}
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservices-network
+
+#  nats:
+#    container_name: nats
+#    image: nats:latest
+#    restart: always
+#    ports:
+#      - '4222:4222'
+#    networks:
+#      - microservices-network
+
+#  redis:
+#    container_name: redis
+#    image: redis
+#    restart: always
+#    ports:
+#      - '6379:6379'
+#
+#    healthcheck:
+#      test: [ "CMD", "redis-cli", "ping" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 3
+
 volumes:
-  db-data:
+  user-db-data:
 
 networks:
   microservices-network:
