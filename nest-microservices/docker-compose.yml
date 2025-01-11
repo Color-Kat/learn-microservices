@@ -26,6 +26,7 @@ services:
     ports:
       - '3001:3001'
       - '3101:3101'
+      - '5555:5555' # Prisma studio
     volumes:
         - ./user-service:/app
         - /app/node_modules

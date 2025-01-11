@@ -10,6 +10,6 @@ export class UserController {
 
     @Get('/')
     getUsers() {
-        return this.prisma.users.findMany();
+        return this.prisma.user.findMany();
     }
 }
