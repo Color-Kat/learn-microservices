@@ -45,7 +45,7 @@ model Role {
 model Profile {
     id     Int  @id @default(autoincrement())
     userId Int  @unique
-    user   User @relation(fields: [userId], references: [id])
+    user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     first_name String?
     last_name  String?
