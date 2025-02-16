@@ -12,17 +12,9 @@ services:
       - myNetwork
 
   api:
-    container_name: api
-    build:
-      context: .
-      dockerfile: ./apps/api/Dockerfile
-    restart: always
-    ports:
-      - "3002:3000"
-    volumes:
-      - ./.env:/app/.env
-    networks:
-      - myNetwork
+    extends:
+      file: docker-compose.api.yml
+      service: api
     depends_on:
       - rmq
 
@@ -42,9 +34,6 @@ services:
   rmq:
     image: rabbitmq:3-management
     restart: always
-    ports:
-      - "5672:5672"
-      - "15672:15672"
     networks:
       - myNetwork
     environment:
